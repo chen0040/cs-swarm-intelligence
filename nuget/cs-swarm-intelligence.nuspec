@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>cs-swarm-intelligence</id>
+    <version>1.0.1</version>
+    <authors>chen0040</authors>
+    <owners>chen0040</owners>
+    <licenseUrl>https://github.com/chen0040/cs-swarm-intelligence/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/chen0040/cs-swarm-intelligence</projectUrl>
+    <iconUrl>https://rawgit.com/chen0040/cs-swarm-intelligence/master/icon.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Swarm Intelligence</description>
+    <releaseNotes>Swarm Intelligence and Optimization in .NET 4.5.2</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>PSO, Particle Swarm Optimization, Ant Colony Optimization, ACO, Ant Colony System, ACS, Bees Algorithms, Optimization, Meta-Heuristic, MetaHeuristic, c-sharp</tags>
+    <dependencies>
+      
+    </dependencies>
+  </metadata>
+</package>
