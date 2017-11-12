@@ -7,7 +7,7 @@
     <ProjectGuid>{F21B0C03-A9EA-42C6-82AA-59048F42AFA5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cs_swarm_intelligence_samples</RootNamespace>
+    <RootNamespace>SwarmIntelligence</RootNamespace>
     <AssemblyName>cs-swarm-intelligence-samples</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,9 +45,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UT_PSO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cs-swarm-intelligence\cs-swarm-intelligence.csproj">
+      <Project>{6b5919b7-5b25-49e0-b9e8-e67e131d97d2}</Project>
+      <Name>cs-swarm-intelligence</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

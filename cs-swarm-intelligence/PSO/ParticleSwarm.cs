@@ -87,6 +87,7 @@ namespace SwarmIntelligence.PSO
     
             mParticles = new Particle[population_size];
             mLocalBestParticles = new Particle[population_size];
+            mEvaluator = evaluator;
         }
 
         public ParticleSwarm(int population_size, int dimension_count, CostEvaluationMethod evaluator, CreateParticleMethod generater = null)
@@ -97,6 +98,7 @@ namespace SwarmIntelligence.PSO
 
             mParticles = new Particle[population_size];
             mLocalBestParticles = new Particle[population_size];
+            mEvaluator = evaluator;
         }
 
         public void Initialize(object info = null)
@@ -149,20 +151,23 @@ namespace SwarmIntelligence.PSO
             }
         }
 
-        public static double Solve(int population_size, int dimension_count, CostEvaluationMethod evaluator, double[] lower_bounds, double[] upper_bounds, out Particle global_best_solution, double tolerance=0.000001, int maxIterations=100000)
+        public static double Solve(int population_size, int dimension_count, CostEvaluationMethod evaluator, double[] lower_bounds, double[] upper_bounds, out Particle global_best_solution, int maxIterations=100000, int displayEvery = 100)
         {
             ParticleSwarm<Particle> solver = new ParticleSwarm<Particle>(population_size, dimension_count, evaluator, lower_bounds, upper_bounds);
             solver.Initialize();
             int iteration = 0;
-            double cost_reduction = tolerance;
             double global_best_solution_cost = solver.GlobalBestSolutionCost;
             double prev_global_best_soution_cost = global_best_solution_cost;
-            while (cost_reduction >= tolerance && iteration < maxIterations)
+            while (iteration < maxIterations)
             {
                 prev_global_best_soution_cost = global_best_solution_cost;
                 solver.Iterate();
                 global_best_solution_cost = solver.GlobalBestSolutionCost;
-                cost_reduction = prev_global_best_soution_cost - global_best_solution_cost;
+                //cost_reduction = prev_global_best_soution_cost - global_best_solution_cost;
+                if(iteration % displayEvery == 0)
+                {
+                    Console.WriteLine("Generation: {0}, Best Cost: {1}", iteration, global_best_solution_cost);
+                }
                 iteration++;
             }
 

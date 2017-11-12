@@ -33,9 +33,35 @@ namespace SwarmIntelligence.PSO
             mParticleGeneratorContext = info;
         }
 
+        public double[] Positions
+        {
+            get
+            {
+                double[] result = new double[mData.GetLength(0)];
+                for(int i=0; i < result.Length; ++i)
+                {
+                    result[i] = mData[i, 0];
+                }
+                return result;
+            }
+        }
+
+        public double[] Velocity
+        {
+            get
+            {
+                double[] result = new double[mData.GetLength(0)];
+                for (int i = 0; i < result.Length; ++i)
+                {
+                    result[i] = mData[i, 1];
+                }
+                return result;
+            }
+        }
+
         public int DimensionCount
         {
-            get { return mData.Length; }
+            get { return mData.GetLength(0); }
         }
 
         public virtual SimpleParticle Clone()
