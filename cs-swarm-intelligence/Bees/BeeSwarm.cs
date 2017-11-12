@@ -19,6 +19,9 @@ namespace SwarmIntelligence.Bees
         protected double[] mLowerBounds;
         protected double[] mUpperBounds;
 
+        public int LocalSearchIntensity { get; set; } = 10;
+        public double[] LocalSearchRegion { get; set; }
+
         protected object mConstraints = null;
 
         public object Constraints
@@ -63,6 +66,24 @@ namespace SwarmIntelligence.Bees
             mEvaluator = evaluator;
         }
 
+        public BeeSwarm(int _n, int _n1, int _n2, int _m, int _e, CostEvaluationMethod evaluator)
+        {
+            mScoutBeeCount = _n;
+            mBeeCount_BestPatches = _n1;
+            mBeeCount_ElitePatches = _n2;
+
+            mBestPatchCount = _m;
+            mElitePatchCount = _e;
+
+            mBeeGenerator = () =>
+            {
+                SimpleBee p = new SimpleBee(this, mLowerBounds.Length, mLowerBounds, mUpperBounds);
+                p.Initialize(Constraints);
+                return p as Bee;
+            };
+            mEvaluator = evaluator;
+        }
+
         protected Bee GenerateBee()
         {
             if (mBeeGenerator != null)
@@ -82,7 +103,7 @@ namespace SwarmIntelligence.Bees
             for (int i = 0; i < mScoutBeeCount; i++)
             {
                 Bee bee = GenerateBee();
-                bee.Initialize(mLowerBounds, mUpperBounds, mConstraints);
+                bee.Initialize(mConstraints);
                 mPatches[i] = bee;
             }
             
@@ -106,12 +127,53 @@ namespace SwarmIntelligence.Bees
             }
         }
 
+        public static double Solve(int population_size, int dimension_count, CostEvaluationMethod evaluator, out Bee global_best_solution, double[] lower_bounds = null, double[] upper_bounds = null, int maxIterations = 100000, int displayEvery = 100, object constraints = null)
+        {
+            int scoutBeeCount = 60;
+            int bestPatch = 15;
+            int elitePatch = 30;
+            BeeSwarm<Bee> solver = new BeeSwarm<Bee>(scoutBeeCount, bestPatch, elitePatch, 20, 10, evaluator);
+            solver.LowerBounds = lower_bounds;
+            solver.UpperBounds = upper_bounds;
+            solver.Constraints = constraints;
+            solver.LocalSearchRegion = new double[dimension_count];
+            for(int i=0; i < dimension_count; ++i)
+            {
+                solver.LocalSearchRegion[i] = (upper_bounds[i] - lower_bounds[i]) / bestPatch;
+            }
+
+            solver.Initialize();
+            int iteration = 0;
+            double global_best_solution_cost = solver.GlobalBestSolutionCost;
+            double prev_global_best_solution_cost = global_best_solution_cost;
+            while (iteration < maxIterations)
+            {
+                prev_global_best_solution_cost = global_best_solution_cost;
+                solver.Iterate();
+                global_best_solution_cost = solver.GlobalBestSolutionCost;
+                if (iteration % displayEvery == 0)
+                {
+                    Console.WriteLine("Generation: {0}, Best Cost: {1}", iteration, global_best_solution_cost);
+                }
+                iteration++;
+            }
+
+            global_best_solution = solver.GlobalBestSolution.Clone() as Bee;
+
+            return global_best_solution_cost;
+        }
+
         public static double Solve(int population_size, int dimension_count, CostEvaluationMethod evaluator, CreateBeeMethod generator, out Bee global_best_solution, double[] lower_bounds = null, double[] upper_bounds = null, object constraints = null, double tolerance = 0.000001, int maxIterations = 100000)
         {
             BeeSwarm<Bee> solver = new BeeSwarm<Bee>(60, 15, 30, 20, 10, evaluator, generator);
             solver.LowerBounds = lower_bounds;
             solver.UpperBounds = upper_bounds;
             solver.Constraints = constraints;
+            solver.LocalSearchRegion = new double[dimension_count];
+            for (int i = 0; i < dimension_count; ++i)
+            {
+                solver.LocalSearchRegion[i] = (upper_bounds[i] - lower_bounds[i]) / 1000;
+            }
 
             solver.Initialize();
             int iteration = 0;
@@ -140,7 +202,7 @@ namespace SwarmIntelligence.Bees
                 //the following for loop is equivalent to a local search around each solution in the elite solutions
                 for (int i = 0; i < mBeeCount_ElitePatches; ++i)
                 {
-                    mGlobalBestSolution.Dance(mPatches[j], mLowerBounds, mUpperBounds, mConstraints);
+                    mGlobalBestSolution.Dance(mPatches[j], LocalSearchRegion, mConstraints);
                     if (mGlobalBestSolution.IsBetterThan(mPatches[j]))
                     {
                         mPatches[j] = mGlobalBestSolution.Clone() as Bee;
@@ -154,7 +216,7 @@ namespace SwarmIntelligence.Bees
                 //the following for loop is equivalent to a local search around each solution next best to the elite solutions
                 for (int i = 0; i < mBeeCount_BestPatches; ++i)
                 {
-                    mGlobalBestSolution.Dance(mPatches[j], mLowerBounds, mUpperBounds, mConstraints);
+                    mGlobalBestSolution.Dance(mPatches[j], LocalSearchRegion, mConstraints);
                     if (mGlobalBestSolution.IsBetterThan(mPatches[j]))
                     {
                         mPatches[j] = mGlobalBestSolution.Clone() as Bee;

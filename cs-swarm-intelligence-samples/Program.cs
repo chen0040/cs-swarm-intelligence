@@ -10,7 +10,7 @@ namespace SwarmIntelligence
     {
         static void Main(string[] args)
         {
-            UT_PSO.RunMain();
+            UT_Bees.RunMain();
         }
     }
 }
