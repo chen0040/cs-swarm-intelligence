@@ -12,13 +12,12 @@ namespace SwarmIntelligence
         {
             int maxIterations = 2000;
             int dimension = 2;
-            int popSize = 200;
-            int displayEvery = 100;
+            int displayEvery = 10;
             double[] lowerBounds = new double[] { -2.048, -2.048 };
             double[] upperBounds = new double[] { 2.048, 2.048 };
             SimpleBee finalSolution;
 
-            BeeSwarm<SimpleBee>.Solve(popSize, dimension, (solution) =>
+            BeeSwarm<SimpleBee>.Solve(dimension, (solution) =>
             {
                 // this is the Rosenbrock Saddle cost function
                 

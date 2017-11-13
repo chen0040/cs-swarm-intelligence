@@ -127,7 +127,7 @@ namespace SwarmIntelligence.Bees
             }
         }
 
-        public static double Solve(int population_size, int dimension_count, CostEvaluationMethod evaluator, out Bee global_best_solution, double[] lower_bounds = null, double[] upper_bounds = null, int maxIterations = 100000, int displayEvery = 100, object constraints = null)
+        public static double Solve(int dimension_count, CostEvaluationMethod evaluator, out Bee global_best_solution, double[] lower_bounds = null, double[] upper_bounds = null, int maxIterations = 100000, int displayEvery = 100, object constraints = null)
         {
             int scoutBeeCount = 60;
             int bestPatch = 15;
@@ -230,6 +230,7 @@ namespace SwarmIntelligence.Bees
                 mGlobalBestSolution.RandomSearch(mLowerBounds, mUpperBounds, mConstraints);
                 mPatches[j] = mGlobalBestSolution.Clone() as Bee;
             }
+
             Array.Sort(mPatches);
 
             mGlobalBestSolution = mPatches[0].Clone() as Bee;

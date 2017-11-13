@@ -31,24 +31,15 @@ namespace SwarmIntelligence.Bees
 
         public virtual void Dance(SimpleBee rhs, double[] sides, object constraints) //local search around rhs
         {
-            double[] localLowerBounds = new double[rhs.Dimension];
-            double[] localUpperBounds = new double[rhs.Dimension];
-
-            for(int i=0; i < rhs.Dimension; ++i)
-            {
-                localLowerBounds[i] = rhs[i] - sides[i];
-                localUpperBounds[i] = rhs[i] + sides[i];
-                localUpperBounds[i] = Math.Min(mUpperBounds[i], localUpperBounds[i]);
-                localLowerBounds[i] = Math.Max(mLowerBounds[i], localLowerBounds[i]);
-            }
+            double[] localLowerBounds = mLowerBounds;
+            double[] localUpperBounds = mUpperBounds;
+            
             RandomSearch(localLowerBounds, localUpperBounds, constraints);
-            UpdateCost();
         }
 
         public void Initialize(object constraints) //initialize random solution
         {
             RandomSearch(mLowerBounds, mUpperBounds, constraints);
-            UpdateCost();
         }
 
         public int Dimension
@@ -68,6 +59,7 @@ namespace SwarmIntelligence.Bees
                 range = upper_bound - lower_bound;
                 mData[d] = lower_bound + range * RandomEngine.NextDouble();
             }
+            this.UpdateCost();
         }
         public virtual SimpleBee Clone() //factory method 
         {
@@ -89,11 +81,8 @@ namespace SwarmIntelligence.Bees
 
         public override void UpdateCost()
         {
-            if (mIsCostValid == false)
-            {
-                mCost = mSwarm.Evaluate(this);
-                mIsCostValid = true;
-            }
+            mCost = mSwarm.Evaluate(this);
+            mIsCostValid = true;
         }
     }
 }
