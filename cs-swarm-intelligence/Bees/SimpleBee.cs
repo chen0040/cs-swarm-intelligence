@@ -69,7 +69,6 @@ namespace SwarmIntelligence.Bees
                 bee[i] = mData[i];
             }
             bee.mCost = mCost;
-            bee.mIsCostValid = mIsCostValid;
             return bee;
         }
 
@@ -82,7 +81,6 @@ namespace SwarmIntelligence.Bees
         public override void UpdateCost()
         {
             mCost = mSwarm.Evaluate(this);
-            mIsCostValid = true;
         }
     }
 }

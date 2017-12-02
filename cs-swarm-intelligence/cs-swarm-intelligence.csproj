@@ -54,6 +54,11 @@
     <Compile Include="Bees\SimpleBee.cs" />
     <Compile Include="ISwarmEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PSO\ISwarm.cs" />
     <Compile Include="PSO\ParticleSwarm.cs" />
     <Compile Include="PSO\SimpleParticle.cs" />
@@ -61,10 +66,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\a280.opt.tour.csv" />
+    <None Include="Resources\a280.tsp.3c.csv" />
+    <None Include="Resources\ali535.tsp.3c.csv" />
+    <None Include="Resources\att48.opt.tour.csv" />
+    <None Include="Resources\att48.tsp.3c.csv" />
+    <None Include="Resources\att532.tsp.3c.csv" />
+    <None Include="Resources\bayg29.opt.tour.csv" />
+    <None Include="Resources\bayg29.tsp.3c.csv" />
+    <None Include="Resources\bayg29.tsp.fdm.csv" />
+    <None Include="Resources\bays29.opt.tour.csv" />
+    <None Include="Resources\bays29.tsp.3c.csv" />
+    <None Include="Resources\bays29.tsp.fdm.csv" />
+    <None Include="Resources\berlin52.opt.tour.csv" />
+    <None Include="Resources\berlin52.tsp.3c.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Benchmarks\Tsp\Tsp.cs" />
+    <Compile Include="Benchmarks\Tsp\TspBenchmark.cs" />
+    <Compile Include="Benchmarks\Tsp\Vector2D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).dll" "$(SolutionDir)nuget\lib\net452\$(ConfigurationName)\$(ProjectName).dll"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetDir)*.dll" "$(SolutionDir)nuget\lib\net452\$(ConfigurationName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

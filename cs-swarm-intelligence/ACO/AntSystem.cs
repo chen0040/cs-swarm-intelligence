@@ -125,6 +125,7 @@ namespace SwarmIntelligence.ACO
 
         public AntSystem(int population_size, int state_count, CostEvaluationMethod evaluator, CreateAntMethod generator = null)
         {
+            mEvaluator = evaluator;
             mStateCount = state_count;
             if (generator == null)
             {
@@ -182,7 +183,7 @@ namespace SwarmIntelligence.ACO
             }
         }
 
-        public static double SolveByAntSystem(int population_size, int state_count, CostEvaluationMethod evaluator, CreateAntMethod generator, out Ant global_best_solution, double tolerance = 0.000001, int maxIterations = 100000)
+        public static double SolveByAntSystem(int population_size, int state_count, CostEvaluationMethod evaluator,out Ant global_best_solution, CreateAntMethod generator = null, double tolerance = 0.000001, int maxIterations = 100000)
         {
             AntSystem<Ant> solver = new AntSystem<Ant>(population_size, state_count, evaluator, generator);
             solver.Initialize();
@@ -235,7 +236,7 @@ namespace SwarmIntelligence.ACO
 
             for (int i = 0; i < ant_count; ++i)
             {
-                mAnts[i].Reset();
+                mAnts[i].Reset(i, mStateCount);
             }
 
             for (int state_index = 0; state_index < mStateCount; ++state_index)

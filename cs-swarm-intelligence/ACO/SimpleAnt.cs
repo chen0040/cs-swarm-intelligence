@@ -52,19 +52,20 @@ namespace SwarmIntelligence.ACO
         public void Add(int state)
         {
             mData.Add(state);
-            mIsCostValid = false;
         }
 
-        public void Reset()
+        public void Reset(int antIndex, int stateCount)
         {
             mData.Clear();
-            mIsCostValid = false;
+            int firstState = (antIndex) % stateCount;
+            mData.Add(firstState);
         }
 
         public int Length
         {
             get { return mData.Count; }
         }
+        
 
         public virtual bool HasTraversedState(int state_id)
         {
@@ -90,7 +91,6 @@ namespace SwarmIntelligence.ACO
                 if(mData[index] != value)
                 {
                     mData[index] = value;
-                    mIsCostValid = false;
                 }
             }
         }
@@ -109,7 +109,6 @@ namespace SwarmIntelligence.ACO
             {
                 mData.Add(rhs.mData[i]);
             }
-            mIsCostValid = rhs.mIsCostValid;
             mCost = rhs.mCost;
         }
     }

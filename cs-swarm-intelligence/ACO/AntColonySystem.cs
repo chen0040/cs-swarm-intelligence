@@ -110,21 +110,24 @@ namespace SwarmIntelligence.ACO
             }
         }
 
-        public static double SolveByAntColonySystem(int population_size, int state_count, CostEvaluationMethod evaluator, CreateAntMethod generator, out Ant global_best_solution, double tolerance = 0.000001, int maxIterations = 100000)
+        public static double SolveByAntColonySystem(int population_size, int state_count, CostEvaluationMethod evaluator, int displayEvery, out Ant global_best_solution, CreateAntMethod generator = null, int maxIterations = 1000)
         {
             AntColonySystem<Ant> solver = new AntColonySystem<Ant>(population_size, state_count, evaluator, generator);
             solver.Initialize();
             int iteration = 0;
-            double cost_reduction = tolerance;
             double global_best_solution_cost = solver.GlobalBestSolutionCost;
             double prev_global_best_solution_cost = global_best_solution_cost;
-            while (cost_reduction >= tolerance && iteration < maxIterations)
+            while (iteration < maxIterations)
             {
                 prev_global_best_solution_cost = global_best_solution_cost;
                 solver.Iterate();
                 global_best_solution_cost = solver.GlobalBestSolutionCost;
-                cost_reduction = prev_global_best_solution_cost - global_best_solution_cost;
+                
                 iteration++;
+                if(displayEvery > 0 && iteration % displayEvery == 0)
+                {
+                    Console.WriteLine("Iteration: {0}, Cost: {1}", iteration, global_best_solution_cost);
+                }
             }
 
             global_best_solution = solver.GlobalBestSolution.Clone() as Ant;

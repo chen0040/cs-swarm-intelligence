@@ -19,11 +19,7 @@ namespace SwarmIntelligence.PSO
 
         public override void UpdateCost()
         {
-            if (mIsCostValid == false)
-            {
-                mCost = mSwarm.Evaluate(this);
-                mIsCostValid = true;
-            }
+            mCost = mSwarm.Evaluate(this);
         }
         
         public SimpleParticle(ISwarm swarm, int dimensions, object info)
@@ -91,10 +87,6 @@ namespace SwarmIntelligence.PSO
                 if (mData[index, column_index] != value)
                 {
                     mData[index, column_index] = value;
-                    if (column_index == 0)
-                    {
-                        mIsCostValid = false;
-                    }
                 }
             }
         }
@@ -112,7 +104,6 @@ namespace SwarmIntelligence.PSO
                     mData[i, j] = rhs.mData[i, j];
                 }
             }
-            mIsCostValid = rhs.mIsCostValid;
             mCost = rhs.mCost;
         }
     }

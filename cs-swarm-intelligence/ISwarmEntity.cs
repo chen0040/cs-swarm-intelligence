@@ -7,18 +7,11 @@ namespace SwarmIntelligence
 {
     public interface ISwarmEntity
     {
-        void InvalidateCost();
 
         double Cost
         {
             get;
         }
 
-        bool IsCostValid
-        {
-            get;
-        }
-
-        void UpdateCost();
     }
 }

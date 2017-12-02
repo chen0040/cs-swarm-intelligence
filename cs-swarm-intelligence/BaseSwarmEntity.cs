@@ -8,7 +8,6 @@ namespace SwarmIntelligence
     public abstract class BaseSwarmEntity : ISwarmEntity, IComparable
     {
         protected double mCost = double.MaxValue;
-        protected bool mIsCostValid = false;
 
         public int CompareTo(object rhs) //when used in Sort, array[0] will be best and array[last] will be worst
         {
@@ -18,26 +17,9 @@ namespace SwarmIntelligence
             else return 0;
         }
 
-        public virtual void InvalidateCost()
-        {
-            mIsCostValid = false;
-        }
-
-        public virtual bool IsCostValid
-        {
-            get { return mIsCostValid; }
-        }
 
         public virtual bool IsBetterThan(ISwarmEntity rhs)
         {
-            if (!rhs.IsCostValid)
-            {
-                return true;
-            }
-            else if (!this.IsCostValid)
-            {
-                return false;
-            }
             return Cost < rhs.Cost;
         }
 
