@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -234,17 +235,24 @@ namespace SwarmIntelligence.ACO
         {
             int ant_count = mAnts.Length;
 
-            for (int i = 0; i < ant_count; ++i)
-            {
-                mAnts[i].Reset(i, mStateCount);
-            }
 
             for (int state_index = 0; state_index < mStateCount; ++state_index)
             {
-                for (int i = 0; i < ant_count; ++i)
+                if (state_index == 0)
                 {
-                    Ant ant = mAnts[i];
-                    TransiteState(ant, state_index);
+
+                    for (int i = 0; i < ant_count; ++i)
+                    {
+                        mAnts[i].Reset(i, mStateCount);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < ant_count; ++i)
+                    {
+                        Ant ant = mAnts[i];
+                        TransiteState(ant, state_index);
+                    }
                 }
             }
         }
@@ -302,7 +310,7 @@ namespace SwarmIntelligence.ACO
             List<int> candidate_states = new List<int>();
             for (int i = 0; i < mStateCount; ++i)
             {
-                if (!ant.HasTraversedState(state_id))
+                if (!ant.HasTraversedState(i))
                 {
                     candidate_states.Add(i);
                 }
@@ -310,7 +318,7 @@ namespace SwarmIntelligence.ACO
             return candidate_states;
         }
 
-        public virtual double GetHeuristicCost(int state1_id, int state2_id)
+        public virtual double GetHeuristicValue(int state1_id, int state2_id)
         {
             if (mHeuristicCostEvaluator != null)
             {
@@ -337,7 +345,7 @@ namespace SwarmIntelligence.ACO
             {
                 int candidate_state_id=candidate_states[i];
                 double pheromone = mPheromones[current_state_id, candidate_state_id];
-                double heuristic_cost = GetHeuristicCost(current_state_id, candidate_state_id);
+                double heuristic_cost = GetHeuristicValue(current_state_id, candidate_state_id);
 
                 double product = System.Math.Pow(pheromone, m_alpha) * System.Math.Pow(heuristic_cost, m_beta);
                 
@@ -355,7 +363,6 @@ namespace SwarmIntelligence.ACO
                     break;
                 }
             }
-
             if (selected_state_id != -1)
             {
                 ant.Add(selected_state_id);

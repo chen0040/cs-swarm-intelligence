@@ -53,9 +53,9 @@ namespace SwarmIntelligence.ACO
             {
                 int candidate_state_id = candidate_states[i];
                 double pheromone = mPheromones[current_state_id, candidate_state_id];
-                double heuristic_cost = GetHeuristicCost(current_state_id, candidate_state_id);
+                double heuristic_value = GetHeuristicValue(current_state_id, candidate_state_id);
 
-                double product = System.Math.Pow(pheromone, m_alpha) * System.Math.Pow(heuristic_cost, m_beta);
+                double product = System.Math.Pow(pheromone, m_alpha) * System.Math.Pow(heuristic_value, m_beta);
 
                 product_sum += product;
                 acc_prob[i] = product_sum;
@@ -85,6 +85,8 @@ namespace SwarmIntelligence.ACO
                     }
                 }
             }
+
+            Console.WriteLine("Selected State: {0}", selected_state_id);
 
             if (selected_state_id != -1)
             {
