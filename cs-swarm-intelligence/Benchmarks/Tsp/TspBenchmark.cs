@@ -69,7 +69,7 @@ namespace SwarmIntelligence.Benchmarks.Tsp {
 
         }
 
-        public int size() {
+        public int ProblemSize() {
             return N;
         }
 
@@ -81,11 +81,11 @@ namespace SwarmIntelligence.Benchmarks.Tsp {
             return optTour;
         }
 
-        public double distance(int v, int w) {
+        public double Distance(int v, int w) {
             return distances[v][w];
         }
 
-        public Vector2D position(int v) {
+        public Vector2D Position(int v) {
             return points[v];
         }
     }

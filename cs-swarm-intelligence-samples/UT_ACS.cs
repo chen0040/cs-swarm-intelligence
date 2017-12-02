@@ -13,11 +13,13 @@ namespace SwarmIntelligence
     {
         public static void RunMain()
         {
-            int populationSize = 5;
-            int problemSize = 29;
+            int populationSize = 100;
+            
             SimpleAnt bestSolution;
             TspBenchmark tsp = Tsp.get(Tsp.Instance.bayg29);
+            int problemSize = tsp.ProblemSize();
             int displayEvery = 10;
+            int maxIterations = 1000;
             AntColonySystem<SimpleAnt>.SolveByAntColonySystem(populationSize, problemSize, solution =>
             {
                 double cost = 0;
@@ -26,10 +28,13 @@ namespace SwarmIntelligence
                     int j = (i + 1) % solution.Length;
                     int v = solution[i];
                     int w = solution[j];
-                    cost += tsp.distance(v, w);
+                    cost += tsp.Distance(v, w);
                 }
                 return cost;
-            }, displayEvery, out bestSolution, null, 2);
+            }, (state1, state2) =>
+            {
+                return 1.0 / (1.0 + tsp.Distance(state1, state2));
+            }, displayEvery, out bestSolution, null, maxIterations);
         }
     }
 }

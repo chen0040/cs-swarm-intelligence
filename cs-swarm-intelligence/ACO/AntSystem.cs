@@ -32,8 +32,8 @@ namespace SwarmIntelligence.ACO
         public delegate List<int> NextCandidateStateLookupMethod(Ant ant, int state_id);
         protected NextCandidateStateLookupMethod mNextStateCandidateStateLookup;
 
-        public delegate double HeuristicCostEvaluationMethod(int state1_id, int state2_id);
-        protected HeuristicCostEvaluationMethod mHeuristicCostEvaluator;
+        public delegate double HeuristicValueEvaluationMethod(int state1_id, int state2_id);
+        protected HeuristicValueEvaluationMethod mHeuristicValueEvaluator;
 
         public delegate double RewardPerStateTransitionEvaluationMethod(Ant ant);
         protected RewardPerStateTransitionEvaluationMethod mRewardPerStateTransitionEvaluator;
@@ -44,10 +44,10 @@ namespace SwarmIntelligence.ACO
             set { mRewardPerStateTransitionEvaluator = value; }
         }
 
-        public HeuristicCostEvaluationMethod HeuristicCostEvaluator
+        public HeuristicValueEvaluationMethod HeuristicValueEvaluator
         {
-            get { return mHeuristicCostEvaluator; }
-            set { mHeuristicCostEvaluator = value; }
+            get { return mHeuristicValueEvaluator; }
+            set { mHeuristicValueEvaluator = value; }
         }
 
         public NextCandidateStateLookupMethod CandidateStateLookup
@@ -184,9 +184,10 @@ namespace SwarmIntelligence.ACO
             }
         }
 
-        public static double SolveByAntSystem(int population_size, int state_count, CostEvaluationMethod evaluator,out Ant global_best_solution, CreateAntMethod generator = null, double tolerance = 0.000001, int maxIterations = 100000)
+        public static double SolveByAntSystem(int population_size, int state_count, CostEvaluationMethod evaluator, HeuristicValueEvaluationMethod heuristicEvaluator, out Ant global_best_solution, CreateAntMethod generator = null, double tolerance = 0.000001, int maxIterations = 100000)
         {
             AntSystem<Ant> solver = new AntSystem<Ant>(population_size, state_count, evaluator, generator);
+            solver.HeuristicValueEvaluator = heuristicEvaluator;
             solver.Initialize();
             int iteration = 0;
             double cost_reduction = tolerance;
@@ -320,9 +321,9 @@ namespace SwarmIntelligence.ACO
 
         public virtual double GetHeuristicValue(int state1_id, int state2_id)
         {
-            if (mHeuristicCostEvaluator != null)
+            if (mHeuristicValueEvaluator != null)
             {
-                return mHeuristicCostEvaluator(state1_id, state2_id);
+                return mHeuristicValueEvaluator(state1_id, state2_id);
             }
             else
             {

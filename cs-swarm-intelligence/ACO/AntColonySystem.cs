@@ -85,9 +85,7 @@ namespace SwarmIntelligence.ACO
                     }
                 }
             }
-
-            Console.WriteLine("Selected State: {0}", selected_state_id);
-
+            
             if (selected_state_id != -1)
             {
                 ant.Add(selected_state_id);
@@ -112,9 +110,10 @@ namespace SwarmIntelligence.ACO
             }
         }
 
-        public static double SolveByAntColonySystem(int population_size, int state_count, CostEvaluationMethod evaluator, int displayEvery, out Ant global_best_solution, CreateAntMethod generator = null, int maxIterations = 1000)
+        public static double SolveByAntColonySystem(int population_size, int state_count, CostEvaluationMethod evaluator, HeuristicValueEvaluationMethod heuristicValueEvaulator, int displayEvery, out Ant global_best_solution, CreateAntMethod generator = null, int maxIterations = 1000)
         {
             AntColonySystem<Ant> solver = new AntColonySystem<Ant>(population_size, state_count, evaluator, generator);
+            solver.HeuristicValueEvaluator = heuristicValueEvaulator;
             solver.Initialize();
             int iteration = 0;
             double global_best_solution_cost = solver.GlobalBestSolutionCost;
