@@ -60,3 +60,63 @@ BeeSwarm<SimpleBee>.Solve(dimension, (solution) =>
 }, out finalSolution, lowerBounds, upperBounds, maxIterations, displayEvery);
 ```
 
+## Ant Colony System
+
+The sample codes belows show to solve the Travelling Salesman Problem (TSP) using Ant Colony System:
+
+```cs 
+int populationSize = 100;
+
+SimpleAnt bestSolution;
+TspBenchmark tsp = Tsp.get(Tsp.Instance.bayg29);
+int problemSize = tsp.ProblemSize();
+int displayEvery = 10;
+int maxIterations = 1000;
+AntColonySystem<SimpleAnt>.SolveByAntColonySystem(populationSize, problemSize
+, solution => // this returns the cost of the solution which in the case of the TSP is the total distance of visiting every cities exactly once using the route represented by the solution 
+{
+	double cost = 0;
+	for(int i=0; i < solution.Length; ++i)
+	{
+		int j = (i + 1) % solution.Length;
+		int v = solution[i];
+		int w = solution[j];
+		cost += tsp.Distance(v, w);
+	}
+	return cost;
+}, (state1, state2) => // this returns the heuristic value for a move from state1 to state2
+{ 
+	return 1.0 / (1.0 + tsp.Distance(state1, state2));
+}, displayEvery, out bestSolution, null, maxIterations);
+```
+
+## Ant System 
+
+The sample codes belows show to solve the Travelling Salesman Problem (TSP) using Ant System:
+
+```cs 
+
+int populationSize = 100;
+            
+SimpleAnt bestSolution;
+TspBenchmark tsp = Tsp.get(Tsp.Instance.bayg29);
+int problemSize = tsp.ProblemSize();
+int displayEvery = 10;
+int maxIterations = 1000;
+AntSystem<SimpleAnt>.SolveByAntSystem(populationSize, problemSize, solution =>
+{
+	double cost = 0;
+	for(int i=0; i < solution.Length; ++i)
+	{
+		int j = (i + 1) % solution.Length;
+		int v = solution[i];
+		int w = solution[j];
+		cost += tsp.Distance(v, w);
+	}
+	return cost;
+}, (state1, state2) =>
+{
+	return 1.0 / (1.0 + tsp.Distance(state1, state2));
+}, displayEvery, out bestSolution, null, maxIterations);
+```
+
