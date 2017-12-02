@@ -10,6 +10,12 @@ The current library support optimization problems in which solutions are either 
 * Bees Algorithm
 * Ant Colony System
 
+# Install 
+
+```bash
+Install-Package cs-swarm-intelligence -Version 1.0.1
+```
+
 # Usage
 
 ## Running PSO
